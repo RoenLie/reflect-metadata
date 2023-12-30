@@ -1,7 +1,9 @@
 {
 	"private": true,
 	"type": "module",
-	"scripts": {},
+	"scripts": {
+		"build": "pnpm -r build"
+	},
 	"devDependencies": {
 		"@roenlie/eslint-config": "^1.3.0",
 		"@roenlie/package-toolbox": "^0.0.22",
