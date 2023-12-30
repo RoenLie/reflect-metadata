@@ -1,0 +1,25 @@
+{
+	"private": true,
+	"name": "@roenlie/insert-name-here",
+	"version": "1.0.26",
+	"description": "",
+	"author": {
+		"name": "Kristoffer Roen-Lie",
+		"url": "https://github.com/RoenLie"
+	},
+	"license": "MIT",
+	"homepage": "https://github.com/RoenLie/mimic#readme",
+	"type": "module",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		},
+		"./*": "./dist/*"
+	},
+	"scripts": {},
+	"dependencies": {},
+	"peerDependencies": {},
+	"devDependencies": {},
+	"sideEffects": []
+}
