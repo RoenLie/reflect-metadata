@@ -7,16 +7,30 @@
 		"url": "https://github.com/RoenLie"
 	},
 	"license": "MIT",
+	"files": [
+		"./dist/lib",
+		"./package.json"
+	],
 	"type": "module",
 	"exports": {
-		".": {
-			"types": "./dist/index.d.ts",
-			"default": "./dist/index.js"
+		"./use": {
+			"types": "./dist/lib/use.d.ts",
+			"default": "./dist/lib/use.js"
 		},
-		"./*": "./dist/*"
+		".": {
+			"types": "./dist/lib/index.d.ts",
+			"default": "./dist/lib/index.js"
+		},
+		"./*": "./dist/lib/*"
 	},
 	"scripts": {
-		"build": "package-toolbox build-indexes && package-toolbox build-exports && vite build"
+		"test": "vitest",
+		"build": "pnpm run \"/^build-.*/\"",
+		"build-clean": "rimraf dist",
+		"build-indexes": "package-toolbox build-indexes",
+		"build-exports": "package-toolbox build-exports",
+		"build-js": "vite build",
+		"build-ts": "tsc --project ./src/tsconfig.json"
 	},
 	"dependencies": {},
 	"peerDependencies": {},

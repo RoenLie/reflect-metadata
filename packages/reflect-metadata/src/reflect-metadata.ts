@@ -30,20 +30,15 @@ const decorateConstructor = (decorators: ClassDecorator[], target: Function): Fu
 function decorate(decorators: ClassDecorator[], target: Function): Function;
 function decorate(decorators: MemberDecorator[], target: object, propertyKey?: PropertyKey, attributes?: PropertyDescriptor): PropertyDescriptor | undefined;
 function decorate(decorators: Decorator[], target: Target, propertyKey?: PropertyKey, attributes?: PropertyDescriptor): Function | PropertyDescriptor | undefined {
-	if (!Array.isArray(decorators) || decorators.length === 0)
-		throw new TypeError();
-
 	if (propertyKey !== undefined)
 		return decorateProperty(decorators as MemberDecorator[], target, propertyKey, attributes);
-
 	if (typeof target === 'function')
 		return decorateConstructor(decorators as ClassDecorator[], target);
 }
 
 
-const getMetadataMap = <T>(target: Target, propertyKey?: PropertyKey): Map<MetadataKey, T> | undefined => {
-	return Metadata.get(target) && Metadata.get(target).get(propertyKey);
-};
+const getMetadataMap = <T>(target: Target, propertyKey?: PropertyKey): Map<MetadataKey, T> | undefined =>
+	Metadata.get(target) && Metadata.get(target).get(propertyKey);
 
 
 const ordinaryGetOwnMetadata = <T>(key: MetadataKey, target: Target, propertyKey?: PropertyKey): T | undefined => {
@@ -87,67 +82,60 @@ const ordinaryGetMetadata = <T>(key: MetadataKey, target: Target, propertyKey?: 
 };
 
 
-const metadata = <T>(key: MetadataKey, value: T) => {
-	return (target: Target, propertyKey?: PropertyKey): void => {
-		ordinaryDefineOwnMetadata<T>(key, value, target, propertyKey);
-	};
-};
+const metadata = <T>(key: MetadataKey, value: T) =>
+	(target: Target, propertyKey?: PropertyKey): void =>
+		void ordinaryDefineOwnMetadata<T>(key, value, target, propertyKey);
 
 
-const getMetadata = <T>(key: MetadataKey, target: Target, propertyKey?: PropertyKey): T | undefined => {
-	return ordinaryGetMetadata<T>(key, target, propertyKey);
-};
+const getMetadata = <T>(key: MetadataKey, target: Target, propertyKey?: PropertyKey): T | undefined =>
+	ordinaryGetMetadata<T>(key, target, propertyKey);
 
 
-const getOwnMetadata = <T>(key: MetadataKey, target: Target, propertyKey?: PropertyKey): T | undefined => {
-	return ordinaryGetOwnMetadata<T>(key, target, propertyKey);
-};
+const getOwnMetadata = <T>(key: MetadataKey, target: Target, propertyKey?: PropertyKey): T | undefined =>
+	ordinaryGetOwnMetadata<T>(key, target, propertyKey);
 
 
-const hasOwnMetadata = (key: MetadataKey, target: Target, propertyKey?: PropertyKey): boolean => {
-	return !!ordinaryGetOwnMetadata(key, target, propertyKey);
-};
+const hasOwnMetadata = (key: MetadataKey, target: Target, propertyKey?: PropertyKey): boolean =>
+	!!ordinaryGetOwnMetadata(key, target, propertyKey);
 
 
-const hasMetadata = (key: MetadataKey, target: Target, propertyKey?: PropertyKey): boolean => {
-	return !!ordinaryGetMetadata(key, target, propertyKey);
-};
+const hasMetadata = (key: MetadataKey, target: Target, propertyKey?: PropertyKey): boolean =>
+	!!ordinaryGetMetadata(key, target, propertyKey);
 
 
-const defineMetadata = <T>(key: MetadataKey, value: T, target: Target, propertyKey?: PropertyKey): void => {
-	ordinaryDefineOwnMetadata(key, value, target, propertyKey);
-};
+const defineMetadata = <T>(key: MetadataKey, value: T, target: Target, propertyKey?: PropertyKey): void =>
+	void ordinaryDefineOwnMetadata(key, value, target, propertyKey);
 
 
-const Reflection = {
+export const ReflectMetadata = {
 	decorate,
+	metadata,
 	defineMetadata,
 	getMetadata,
 	getOwnMetadata,
 	hasMetadata,
 	hasOwnMetadata,
-	metadata,
 };
 
 
-export const useReflectionShim = () => {
-	const keys = Object.keys(Reflection);
+export const useReflectMetadata = () => {
+	const keys = Object.keys(ReflectMetadata);
 	const existingProps = Object.getOwnPropertyNames(Reflect);
 	if (existingProps.some(k => keys.includes(k)))
-		return;
+		return false;
 
-	Object.assign(Reflect, Reflection);
+	return !!Object.assign(Reflect, ReflectMetadata);
 };
 
 
 declare global {
 	namespace Reflect {
-		const decorate: typeof Reflection.decorate;
-		const defineMetadata: typeof Reflection.defineMetadata;
-		const getMetadata: typeof Reflection.getMetadata;
-		const getOwnMetadata: typeof Reflection.getOwnMetadata;
-		const hasOwnMetadata: typeof Reflection.hasOwnMetadata;
-		const hasMetadata: typeof Reflection.hasMetadata;
-		const metadata: typeof Reflection.metadata;
+		const decorate:       typeof ReflectMetadata.decorate;
+		const defineMetadata: typeof ReflectMetadata.defineMetadata;
+		const getMetadata:    typeof ReflectMetadata.getMetadata;
+		const getOwnMetadata: typeof ReflectMetadata.getOwnMetadata;
+		const hasOwnMetadata: typeof ReflectMetadata.hasOwnMetadata;
+		const hasMetadata:    typeof ReflectMetadata.hasMetadata;
+		const metadata:       typeof ReflectMetadata.metadata;
 	}
 }

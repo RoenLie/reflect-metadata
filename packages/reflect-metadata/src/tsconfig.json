@@ -1,12 +1,14 @@
 {
 	"extends": "@roenlie/tsconfig",
 	"compilerOptions": {
-		"outDir": "../dist",
+		"outDir": "../dist/lib",
 		"rootDir": ".",
 		"baseUrl": ".",
 		"noEmit": false,
 		"emitDeclarationOnly": true,
 		"incremental": true,
+		"declarationMap": false,
+		"tsBuildInfoFile": "../dist/.tsbuildinfo",
 		"types": [
 			"vite/client"
 		]

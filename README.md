@@ -14,4 +14,4 @@ Repeated calls to `useReflectionShim` will have no effect.
 If any of the methods being shimmed already exists from a different reflect-metadata shim.
 This implementation will not have any effect.
 
-Approximately 1.62kb compiled, 0.66kb gzipped.
+Approximately 1.70kb compiled, 0.70kb gzipped.

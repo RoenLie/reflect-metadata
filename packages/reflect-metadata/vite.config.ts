@@ -1,5 +1,9 @@
 import { libConfig } from '@roenlie/package-toolbox/vite-utils';
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 
 
-export default defineConfig(libConfig());
+export default defineConfig(libConfig({
+	build: {
+		outDir: './dist/lib',
+	},
+}));
