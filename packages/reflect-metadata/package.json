@@ -1,6 +1,6 @@
 {
 	"name": "@roenlie/reflect-metadata",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "",
 	"author": {
 		"name": "Kristoffer Roen-Lie",
@@ -13,6 +13,8 @@
 		"./readme.md"
 	],
 	"type": "module",
+	"main": "./dist/lib/index.js",
+	"types": "./dist/lib/use.d.ts",
 	"exports": {
 		"./use": {
 			"types": "./dist/lib/use.d.ts",
@@ -25,7 +27,7 @@
 		"./*": "./dist/lib/*"
 	},
 	"scripts": {
-		"test": "vitest",
+		"test": "vitest --run",
 		"build": "pnpm run \"/^build-.*/\"",
 		"build-clean": "rimraf dist",
 		"build-indexes": "package-toolbox build-indexes",
